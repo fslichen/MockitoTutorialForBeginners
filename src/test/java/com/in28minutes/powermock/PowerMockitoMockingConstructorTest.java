@@ -27,6 +27,7 @@ public class PowerMockitoMockingConstructorTest {
 	SystemUnderTest systemUnderTest;
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void powerMockito_MockingAConstructor() throws Exception {
 
 		ArrayList<String> mockList = mock(ArrayList.class);

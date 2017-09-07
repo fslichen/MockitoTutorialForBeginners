@@ -13,6 +13,7 @@ import org.junit.Test;
 public class SpyTest {
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void creatingASpyOnArrayList() {
 		List<String> listSpy = spy(ArrayList.class);
 		listSpy.add("Ranga");
@@ -26,6 +27,7 @@ public class SpyTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void creatingASpyOnArrayList_overridingSpecificMethods() {
 		List<String> listSpy = spy(ArrayList.class);
 		listSpy.add("Ranga");
