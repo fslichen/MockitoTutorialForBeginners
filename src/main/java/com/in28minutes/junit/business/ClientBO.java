@@ -7,8 +7,5 @@ import com.in28minutes.junit.model.Amount;
 import com.in28minutes.junit.model.Product;
 
 public interface ClientBO {
-
-	Amount getClientProductsSum(List<Product> products)
-			throws DifferentCurrenciesException;
-
+	public Amount getClientProductsSum(List<Product> products) throws DifferentCurrenciesException;
 }
