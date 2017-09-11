@@ -17,7 +17,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,6 +45,16 @@ public class AnyControllerTest {
     }
     
     @Test
+    public void testGetDto() throws Exception {
+    		when(anyService.anyString()).thenReturn("Hello World");
+        mockMvc.perform(get("/get/dto"))
+        .andExpect(status().isOk())
+		.andExpect(jsonPath("$.name", is("Chen")))// Verify that the name is "Chen".
+        .andExpect(jsonPath("$.age", is(27)))
+        .andExpect(jsonPath("$.gender", is("M")));
+    }
+    
+    @Test
     public void testGetArray() throws Exception {
         when(anyService.anyString()).thenReturn("Hello World");
         mockMvc.perform(get("/get/array"))
@@ -53,6 +65,17 @@ public class AnyControllerTest {
         .andExpect(jsonPath("$[0].gender", is("M")));
         verify(anyService, times(1)).anyString();// Verify that anyMethod() is invoked only once in anyService.
         verifyNoMoreInteractions(anyService);// Verify that after the response, no more interactions are made to the anyService.
+    }
+    
+    @Test
+    public void testGetResponse() throws Exception {
+        MvcResult result = mockMvc.perform(get("/get/response"))
+        .andExpect(status().isOk()).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        System.out.println(String.format("Content = %s", response.getContentAsString()));
+        System.out.println(String.format("Character Encoding = %s", response.getCharacterEncoding()));
+        System.out.println(String.format("Content Type = %s", response.getContentType()));
+        System.out.println(String.format("Status = %s", response.getStatus()));
     }
     
     @Test
