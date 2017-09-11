@@ -27,6 +27,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import evolution.controller.dto.PostRequest;
 import evolution.service.AnyService;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.*;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 public class AnyControllerTest {
 	@Mock
 	private AnyService anyService;
@@ -42,6 +61,37 @@ public class AnyControllerTest {
         mockMvc = MockMvcBuilders// Builds a MockMvc instance by registering one or more @Controller instances and configuring Spring MVC infrastructure programmatically.
                 .standaloneSetup(anyController)
                 .build();
+    }
+    
+    @Test
+    public void testPostCallService() throws Exception {
+    		when(anyService.originalInteger(27)).thenReturn(27);
+    		when(anyService.originalString("Chen")).thenReturn("Chen");
+    		when(anyService.originalString("M")).thenReturn("M");
+    		doNothing().when(anyService).wasteTime();
+    		mockMvc.perform(post("/post/call/service"))
+    		.andExpect(jsonPath("$.name", is("Chen")))
+    		.andExpect(jsonPath("$.gender", is("M")))
+    		.andExpect(jsonPath("$.age", is(27)));
+    }
+    
+    @Test
+    public void testNotFound() throws Exception {
+    		mockMvc.perform(get("/anyPage"))
+		.andExpect(status().isNotFound());
+    }
+    
+    @Test
+    public void testGetPathVariable() throws Exception {
+    		mockMvc.perform(get("/get/path/variable/{name}", "Chen"))
+    		.andExpect(jsonPath("$.name", is("Chen")));
+    }
+    
+    @Test
+    public void testGetRequestParameter() throws Exception {
+    		mockMvc.perform(get("/get/request/parameter?name={name}", "Chen"))
+    		.andExpect(status().isOk())
+    		.andExpect(jsonPath("$.name", is("Chen")));
     }
     
     @Test

@@ -11,4 +11,16 @@ public class AnyService {
 	public Integer anyInteger() {
 		return 0;
 	}
+	
+	public String originalString(String string) {
+		return string;
+	}
+	
+	public Integer originalInteger(Integer integer) {
+		return integer;
+	}
+	
+	public void wasteTime() {
+		
+	}
 }

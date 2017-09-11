@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import evolution.controller.dto.GetResponse;
@@ -17,6 +19,29 @@ import evolution.service.AnyService;
 public class AnyController {
 	@Autowired
 	private AnyService anyService;
+	
+	@PostMapping("/post/call/service")
+	public GetResponse postCallService() {
+		GetResponse response = new GetResponse();
+		response.setAge(anyService.originalInteger(27));
+		response.setName(anyService.originalString("Chen"));
+		response.setGender(anyService.originalString("M"));
+		return response;
+	}
+	
+	@GetMapping("/get/path/variable/{name}")
+	public GetResponse getPathVariable(@PathVariable("name") String name) {
+		GetResponse response = new GetResponse();
+		response.setName(name);
+		return response;
+	}
+	
+	@GetMapping("/get/request/parameter")
+	public GetResponse getRequestParameter(@RequestParam("name") String name) {
+		GetResponse response = new GetResponse();
+		response.setName(name);
+		return response;
+	}
 	
 	@GetMapping("/get/call/service")
 	public GetResponse getCallService() {
