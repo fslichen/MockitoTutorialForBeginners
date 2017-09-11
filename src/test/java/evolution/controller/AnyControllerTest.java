@@ -45,6 +45,16 @@ public class AnyControllerTest {
     }
     
     @Test
+    public void testGetCallService() throws Exception {
+    		when(anyService.anyString()).thenReturn("Hello");
+    		when(anyService.anyInteger()).thenReturn(100);
+    		mockMvc.perform(get("/get/call/service"))
+    		.andExpect(jsonPath("$.name", is("Hello")))
+    		.andExpect(jsonPath("$.gender", is("Hello")))
+    		.andExpect(jsonPath("$.age", is(100)));
+    }
+    
+    @Test
     public void testGetDto() throws Exception {
     		when(anyService.anyString()).thenReturn("Hello World");
         mockMvc.perform(get("/get/dto"))

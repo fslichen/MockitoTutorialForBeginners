@@ -18,6 +18,15 @@ public class AnyController {
 	@Autowired
 	private AnyService anyService;
 	
+	@GetMapping("/get/call/service")
+	public GetResponse getCallService() {
+		GetResponse response = new GetResponse();
+		response.setAge(anyService.anyInteger());
+		response.setGender(anyService.anyString());
+		response.setName(anyService.anyString());
+		return response;
+	}
+	
 	@GetMapping("/get/dto")
 	public GetResponse getDto() {
 		GetResponse response = new GetResponse();
